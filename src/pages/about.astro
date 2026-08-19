@@ -1,0 +1,51 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Sidebar from "../components/Sidebar.astro";
+import { getCollection } from "astro:content";
+import { SITE, SOCIAL } from "../config";
+import { formatDate, sortByDate } from "../utils";
+
+const all = await getCollection("posts", ({ data }) => !data.draft);
+const sorted = sortByDate(all);
+---
+
+<Layout title="关于" heroTitle="关于我" heroSubtitle="你好呀，很高兴认识你" page>
+  <main class="container">
+    <div class="layout-main">
+      <section>
+        <article class="card post-page">
+          <div class="post-content" style="padding:40px">
+            <h2>👋 你好，我是 {SITE.author}</h2>
+            <p>
+              欢迎来到「{SITE.title}」。{SITE.description}
+            </p>
+
+            <h2>🎯 这个博客写什么</h2>
+            <ul>
+              <li>技术教程与折腾记录</li>
+              <li>学习笔记与踩坑经验</li>
+              <li>工具资源与效率技巧</li>
+            </ul>
+
+            <h2>📮 联系方式</h2>
+            <ul>
+              <li>GitHub：<a href={SOCIAL.github} target="_blank" rel="noopener">{SOCIAL.github}</a></li>
+              <li>邮箱：<a href={`mailto:${SOCIAL.email}`}>{SOCIAL.email}</a></li>
+              <li>RSS：<a href="/rss.xml">订阅本站</a></li>
+            </ul>
+
+            <h2>📊 站点统计</h2>
+            <ul>
+              <li>文章总数：{sorted.length} 篇</li>
+              <li>最近更新：{sorted[0] ? formatDate(sorted[0].data.date) : "-"}</li>
+            </ul>
+
+            <blockquote>{SITE.slogan}</blockquote>
+          </div>
+        </article>
+      </section>
+      <Sidebar posts={sorted} />
+    </div>
+  </main>
+</Layout>
+

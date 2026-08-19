@@ -1,0 +1,76 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import { formatDate, formatDateCN, readingTime, sortByDate } from "../../utils";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("posts", ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post, posts },
+  }));
+}
+
+const { post, posts } = Astro.props;
+const { Content } = await render(post);
+const sorted = sortByDate(posts);
+const idx = sorted.findIndex((p) => p.id === post.id);
+const prev = sorted[idx + 1];
+const next = sorted[idx - 1];
+const { title, date, cover, tags, pinned } = post.data;
+---
+
+<Layout title={title} description={post.data.description} hideHero>
+  <main class="container" style="padding-top:28px;padding-bottom:60px">
+    <article class="card post-page">
+      <header class="post-hero">
+        <h1>{title}</h1>
+        <div class="meta">
+          <time datetime={formatDate(date)}>📅 {formatDateCN(date)}</time>
+          <span>☕ {readingTime(post)} 分钟</span>
+          {pinned && <span>📌 置顶</span>}
+        </div>
+      </header>
+
+      {cover && (
+        <div class="post-cover">
+          <img src={cover} alt={title} />
+        </div>
+      )}
+
+      <div class="post-content">
+        <Content />
+      </div>
+
+      {
+        tags.length > 0 && (
+          <div class="post-tags-section">
+            <span>标签：</span>
+            <div class="post-tags">
+              {tags.map((tag) => <a href={`/tags/${tag}/`}>#{tag}</a>)}
+            </div>
+          </div>
+        )
+      }
+
+      <nav class="post-nav" aria-label="文章导航">
+        {
+          prev ? (
+            <a href={`/posts/${prev.id}/`}>
+              <span class="label">← 上一篇</span>
+              <span class="title">{prev.data.title}</span>
+            </a>
+          ) : <span />
+        }
+        {
+          next && (
+            <a class="next" href={`/posts/${next.id}/`}>
+              <span class="label">下一篇 →</span>
+              <span class="title">{next.data.title}</span>
+            </a>
+          )
+        }
+      </nav>
+    </article>
+  </main>
+</Layout>

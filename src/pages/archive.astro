@@ -1,0 +1,48 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import Sidebar from "../components/Sidebar.astro";
+import { formatDate, sortByDate } from "../utils";
+
+const all = await getCollection("posts", ({ data }) => !data.draft);
+const sorted = sortByDate(all);
+
+// 按月分组
+const groups = new Map<string, typeof sorted>();
+for (const p of sorted) {
+  const key = `${p.data.date.getFullYear()}-${String(p.data.date.getMonth() + 1).padStart(2, "0")}`;
+  if (!groups.has(key)) groups.set(key, []);
+  groups.get(key)!.push(p);
+}
+---
+
+<Layout title="归档" heroTitle="文章归档" heroSubtitle={`共 ${sorted.length} 篇文章，记录每一次折腾`} page>
+  <main class="container">
+    <div class="layout-main">
+      <section>
+        <div class="card" style="padding:32px">
+          {
+            [...groups.entries()].map(([month, posts]) => (
+              <div id={month} style="margin-bottom:28px;scroll-margin-top:80px">
+                <h2 style="font-size:20px;margin-bottom:16px;color:var(--accent-deep)">
+                  📁 {month}
+                </h2>
+                <div class="timeline">
+                  {
+                    posts.map((p) => (
+                      <div class="tl-item">
+                        <div class="tl-date">{formatDate(p.data.date)}</div>
+                        <a class="tl-title" href={`/posts/${p.id}/`}>{p.data.title}</a>
+                      </div>
+                    ))
+                  }
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+      <Sidebar posts={sorted} />
+    </div>
+  </main>
+</Layout>

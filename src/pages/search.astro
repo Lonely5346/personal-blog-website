@@ -1,0 +1,110 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import { formatDate, sortByDate } from "../utils";
+
+const all = await getCollection("posts", ({ data }) => !data.draft);
+const sorted = sortByDate(all);
+
+// 构建时生成搜索索引（纯文本摘要，避免把整篇 HTML 塞进页面）
+const index = sorted.map((p) => ({
+  url: `/posts/${p.id}/`,
+  title: p.data.title,
+  date: formatDate(p.data.date),
+  tags: p.data.tags ?? [],
+  text: (p.body ?? "")
+    .replace(/```[\s\S]*?```/g, " ")
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, " ")
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
+    .replace(/[#>*_`~-]/g, " ")
+    .replace(/\s+/g, " ")
+    .slice(0, 600),
+}));
+const json = JSON.stringify(index).replace(/</g, "\\u003c");
+---
+
+<Layout title="搜索" heroTitle="站内搜索" heroSubtitle="输入关键词，快速找到想看的文章" page>
+  <main class="container" style="padding-bottom:60px">
+    <div class="search-page">
+      <form class="search-input-wrap" role="search">
+        <input
+          id="search-input"
+          type="search"
+          placeholder="输入关键词，回车搜索…"
+          autocomplete="off"
+        />
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      </form>
+
+      <p class="search-hint" id="search-hint">输入关键词开始搜索 🔍</p>
+      <div id="search-results"></div>
+    </div>
+  </main>
+
+  <script type="application/json" id="search-data" set:html={json}></script>
+
+  <script>
+    const data = JSON.parse(document.getElementById("search-data").textContent);
+    const input = document.getElementById("search-input");
+    const results = document.getElementById("search-results");
+    const hint = document.getElementById("search-hint");
+
+    function render(q) {
+      const kw = q.trim().toLowerCase();
+      if (!kw) {
+        hint.textContent = "输入关键词开始搜索 🔍";
+        hint.style.display = "";
+        results.innerHTML = "";
+        return;
+      }
+      const hits = data.filter(
+        (p) =>
+          p.title.toLowerCase().includes(kw) ||
+          p.text.toLowerCase().includes(kw) ||
+          p.tags.some((t) => t.toLowerCase().includes(kw))
+      );
+      if (hits.length === 0) {
+        hint.textContent = `没有找到与「${q}」相关的文章 😢`;
+        hint.style.display = "";
+        results.innerHTML = "";
+        return;
+      }
+      hint.style.display = "none";
+      results.innerHTML = hits
+        .map(
+          (p) => `
+            <article class="card post-card">
+              <div class="post-body">
+                <div class="post-meta"><time>${p.date}</time></div>
+                <h2><a href="${p.url}">${p.title}</a></h2>
+                <p class="post-excerpt">${p.text.slice(0, 120)}…</p>
+                <div class="post-footer">
+                  <div class="post-tags">${p.tags.map((t) => `<a href="/tags/${t}/">#${t}</a>`).join("")}</div>
+                  <a href="${p.url}" style="color:var(--accent-deep);font-weight:600">阅读全文 →</a>
+                </div>
+              </div>
+            </article>`
+        )
+        .join("");
+    }
+
+    let timer;
+    input.addEventListener("input", () => {
+      clearTimeout(timer);
+      timer = window.setTimeout(() => render(input.value), 150);
+    });
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        render(input.value);
+      }
+    });
+    // 从首页搜索框带参跳转
+    const q = new URLSearchParams(location.search).get("q");
+    if (q) {
+      input.value = q;
+      render(q);
+      input.focus();
+    }
+  </script>
+</Layout>

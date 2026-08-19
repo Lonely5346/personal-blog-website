@@ -1,0 +1,17 @@
+{
+  "name": "personal-blog-website",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "一个 Sakurairo 风格的个人博客（Astro 静态站点）",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/rss": "^4.0.11",
+    "astro": "^5.12.0"
+  }
+}

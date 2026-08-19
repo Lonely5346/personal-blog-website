@@ -1,0 +1,27 @@
+---
+import { NAV } from "../config";
+import ThemeToggle from "./ThemeToggle.astro";
+---
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="/" aria-label="回到首页">
+      <span class="logo-dot">梦</span>
+      <span>梦落の小屋</span>
+    </a>
+
+    <nav class="site-nav" aria-label="主导航">
+      {
+        NAV.map((item) => (
+          <a href={item.href} aria-current={Astro.url.pathname === item.href ? "page" : undefined}>
+            {item.text}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="nav-right">
+      <ThemeToggle />
+    </div>
+  </div>
+</header>

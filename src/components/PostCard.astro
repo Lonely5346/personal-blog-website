@@ -1,0 +1,49 @@
+---
+import type { Post } from "../utils";
+import { formatDate, excerpt, readingTime } from "../utils";
+
+interface Props {
+  post: Post;
+  index?: number;
+}
+
+const { post } = Astro.props;
+const { title, date, cover, tags, pinned, description } = post.data;
+const isDark = Astro.url.pathname.includes("dark");
+---
+
+<article class="card post-card">
+  {
+    cover ? (
+      <a class="post-cover" href={`/posts/${post.id}/`}>
+        <img src={cover} alt={title} loading="lazy" />
+      </a>
+    ) : (
+      <a class="post-cover" href={`/posts/${post.id}/`} aria-hidden="true">
+        <div class="cover-placeholder">🌸</div>
+      </a>
+    )
+  }
+  <div class="post-body">
+    <div class="post-meta">
+      {pinned && <span class="badge">📌 置顶</span>}
+      <time datetime={formatDate(date)}>{formatDate(date)}</time>
+      <span>☕ 阅读约 {readingTime(post)} 分钟</span>
+      {description && <span>✨ AI 摘要</span>}
+    </div>
+    <h2>
+      <a href={`/posts/${post.id}/`}>{title}</a>
+    </h2>
+    <p class="post-excerpt">{excerpt(post)}</p>
+    <div class="post-footer">
+      <div class="post-tags">
+        {
+          tags.slice(0, 3).map((tag) => (
+            <a href={`/tags/${tag}/`}>#{tag}</a>
+          ))
+        }
+      </div>
+      <a href={`/posts/${post.id}/`} style="color:var(--accent-deep);font-weight:600">阅读全文 →</a>
+    </div>
+  </div>
+</article>

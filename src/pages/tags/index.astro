@@ -1,0 +1,31 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import Sidebar from "../../components/Sidebar.astro";
+import { collectTags, sortByDate } from "../../utils";
+
+const all = await getCollection("posts", ({ data }) => !data.draft);
+const sorted = sortByDate(all);
+const tags = collectTags(sorted);
+---
+
+<Layout title="标签" heroTitle="标签云" heroSubtitle="按标签浏览所有文章" page>
+  <main class="container">
+    <div class="layout-main">
+      <section>
+        <div class="card" style="padding:32px">
+          <div class="tag-cloud" style="gap:12px">
+            {
+              tags.map(([tag, count]) => (
+                <a href={`/tags/${tag}/`} style="font-size:15px" title={`${count} 篇文章`}>
+                  #{tag} <span style="opacity:.6">({count})</span>
+                </a>
+              ))
+            }
+          </div>
+        </div>
+      </section>
+      <Sidebar posts={sorted} />
+    </div>
+  </main>
+</Layout>

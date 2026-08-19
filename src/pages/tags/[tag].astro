@@ -1,0 +1,35 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import PostCard from "../../components/PostCard.astro";
+import Sidebar from "../../components/Sidebar.astro";
+import { sortByDate } from "../../utils";
+
+export async function getStaticPaths() {
+  const all = await getCollection("posts", ({ data }) => !data.draft);
+  const tags = new Set<string>();
+  for (const p of all) for (const t of p.data.tags ?? []) tags.add(t);
+  return [...tags].map((tag) => ({ params: { tag }, props: { all } }));
+}
+
+const { tag } = Astro.params;
+const { all } = Astro.props;
+const posts = sortByDate(all.filter((p) => (p.data.tags ?? []).includes(tag)));
+---
+
+<Layout
+  title={`标签：${tag}`}
+  heroTitle={`# ${tag}`}
+  heroSubtitle={`共 ${posts.length} 篇文章`}
+  page
+>
+  <main class="container">
+    <div class="layout-main">
+      <section>
+        {posts.map((post) => <PostCard post={post} />)}
+        {posts.length === 0 && <p style="color:var(--text-secondary)">该标签下暂无文章。</p>}
+      </section>
+      <Sidebar posts={all} />
+    </div>
+  </main>
+</Layout>

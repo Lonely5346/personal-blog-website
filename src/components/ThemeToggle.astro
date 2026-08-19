@@ -1,0 +1,45 @@
+<button
+  class="theme-toggle"
+  id="theme-toggle"
+  type="button"
+  aria-label="切换亮暗模式"
+  title="切换亮暗模式"
+>
+  <span id="theme-icon" aria-hidden="true">🌙</span>
+</button>
+
+<script>
+  // 安全存取主题（部分环境 localStorage 不可用）
+  function getStoredTheme() {
+    try {
+      return localStorage.getItem("theme");
+    } catch {
+      return null;
+    }
+  }
+  function setStoredTheme(theme: string) {
+    try {
+      localStorage.setItem("theme", theme);
+    } catch {
+      /* ignore */
+    }
+  }
+
+  const btn = document.getElementById("theme-toggle");
+  const icon = document.getElementById("theme-icon");
+
+  function apply(theme: string) {
+    document.documentElement.dataset.theme = theme;
+    icon.textContent = theme === "dark" ? "☀️" : "🌙";
+    setStoredTheme(theme);
+  }
+
+  btn.addEventListener("click", () => {
+    const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+    apply(next);
+  });
+
+  // 与 Layout 初始化保持一致
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  apply(getStoredTheme() || (prefersDark ? "dark" : "light"));
+</script>
