@@ -116,10 +116,11 @@ git push                             # 触发 GitHub Actions 自动部署
 - git 提交时如无全局 user 配置，用内联身份：
   `git -c user.name="PersonalBlog" -c user.email="blog@example.com" commit -m "..."`
 
-## 8. 当前状态（截至 2026-08-20）
+## 8. 当前状态（截至 2026-08-21）
 
-- ✅ 网站已上线：`https://blog.lonely5346.cn`（苍の博客，已发布 1 篇文章）
+- ✅ 网站已上线：`https://blog.lonely5346.cn`（苍の博客，已发布 2 篇文章）
   - 《你好，世界 —— 苍の博客开张了》（`src/content/posts/welcome.md`）
+  - 《8月20日网站更新日志：导航页、域名迁移与合规上线》（`src/content/posts/site-update-2026-08-20.md`）
 - ✅ 站点信息已改为真实资料（作者/头像/GitHub/邮箱/标题）
 - ✅ 自动部署已配置并验证通过（GitHub Actions：push main 自动部署 Cloudflare Pages）
 - ✅ 本地 `main` 与 `origin/main` 保持同步
@@ -136,9 +137,9 @@ git push                             # 触发 GitHub Actions 自动部署
 | 验证 DNS | 用 alidns/doh.pub DoH 加 `cd=true` |
 | 加评论/统计 | 未配置；可考虑 giscus（GitHub 登录评论）、Umami/不蒜子统计 |
 
-## 10. 未做/可扩展
+## 10. 后续开发路线图（详见 README）
 
-- 评论系统（giscus / Waline）未接入
-- 访问统计未接入
-- 文章封面图生成未做
-- 图床未配置（图片目前放 `public/` 或外链）
+- P0：评论系统（giscus / Waline）、访问统计（Umami / 不蒜子）
+- P1：文章封面图自动生成、图床配置、更多子域名服务（相册/项目）
+- P2：定时构建、SEO 增强（sitemap / JSON-LD）、性能优化
+- ⚠️ 接入评论/统计后，记得同步更新 `/privacy` 隐私政策的数据收集说明
