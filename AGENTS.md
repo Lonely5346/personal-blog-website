@@ -114,10 +114,13 @@ git push                             # 触发 GitHub Actions 自动部署
 
 ## 8. 当前状态（截至 2026-08-20）
 
-- ✅ 网站已上线：`https://lonely5346.cn`（苍の博客，空站，0 篇已发布文章）
+- ✅ 网站已上线：`https://lonely5346.cn`（苍の博客，已发布 2 篇文章）
+  - 《你好，世界 —— 苍の博客开张了》（`src/content/posts/welcome.md`）
+  - 《面向四代钠冷快堆的乏燃料池冷却水高精度净化关键装备研究》（`src/content/posts/nuclear-purification.md`）
 - ✅ 站点信息已改为真实资料（作者/头像/GitHub/邮箱/标题）
-- ✅ 自动部署已配置并验证通过
-- ⏳ **待办检查**：本地 `main` 可能领先 `origin/main` 1 个提交（提交 `8ad3cb4`，标题修改）。执行 `git status -sb` 确认，若 `ahead 1` 则网络恢复后 `git push`（自动部署会补跑）
+- ✅ 自动部署已配置并验证通过（GitHub Actions：push main 自动部署 Cloudflare Pages）
+- ✅ 本地 `main` 与 `origin/main` 保持同步
+- ℹ️ 注意：GitHub 直连不稳定，push 失败时按第 7 节策略重试或改用备用通道
 
 ## 9. 常见任务速查
 
