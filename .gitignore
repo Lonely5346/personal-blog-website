@@ -16,3 +16,6 @@ pnpm-debug.log*
 .DS_Store
 # vercel
 .vercel
+
+# local npm mirror config
+.npmrc
