@@ -1,0 +1,59 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Sidebar from "../components/Sidebar.astro";
+import { getCollection } from "astro:content";
+import { SITE, SOCIAL } from "../config";
+import { sortByDate } from "../utils";
+
+const all = await getCollection("posts", ({ data }) => !data.draft);
+const sorted = sortByDate(all);
+---
+
+<Layout title="隐私政策" heroTitle="隐私政策" heroSubtitle="我们重视并保护你的隐私" page>
+  <main class="container">
+    <div class="layout-main">
+      <section>
+        <article class="card post-page">
+          <div class="post-content" style="padding:40px">
+            <p>更新日期：2026-08-21</p>
+
+            <h2>1. 我们收集哪些信息</h2>
+            <p>
+              本站为个人博客，<strong>不提供注册、登录、评论、订阅等服务</strong>，正常情况下不会主动收集你的个人信息。
+              目前仅在以下场景可能接触到少量数据：
+            </p>
+            <ul>
+              <li><strong>浏览器本地存储</strong>：主题（亮/暗）偏好保存在你的浏览器 localStorage 中，仅在你的设备上使用，不会上传到服务器。</li>
+              <li><strong>服务器访问日志</strong>：本站由 Cloudflare CDN 与 Cloudflare Pages 托管，其服务器会按行业惯例自动记录访问日志（如 IP 地址、浏览器类型、访问时间、请求路径），用于保障网站安全、排障与统计流量。</li>
+            </ul>
+
+            <h2>2. Cookie 与第三方服务</h2>
+            <p>
+              本站<strong>不使用第三方广告、统计或追踪服务</strong>（如 Google Analytics、百度统计等），也未接入第三方评论系统。
+              若未来新增上述功能，我们会及时更新本政策并在此说明。
+            </p>
+
+            <h2>3. 信息的用途与共享</h2>
+            <p>
+              上述日志信息仅用于网站运营、安全防护与故障排查，<strong>不会出售、出租或向第三方披露</strong>你的个人信息，
+              法律法规另有规定的除外。
+            </p>
+
+            <h2>4. 你的权利</h2>
+            <p>
+              根据《中华人民共和国个人信息保护法》，你有权查询、更正、删除你的个人信息，或撤回同意。
+              由于本站不收集可识别到个人的业务数据，如对隐私政策有任何疑问，可通过下方邮箱联系我们：
+              <a href={`mailto:${SOCIAL.email}`}>{SOCIAL.email}</a>。
+            </p>
+
+            <h2>5. 政策更新</h2>
+            <p>
+              本政策可能根据网站功能与法律法规变化适时更新，更新后会在本页面顶部注明日期。请定期查看本页面。
+            </p>
+          </div>
+        </article>
+      </section>
+      <Sidebar posts={sorted} />
+    </div>
+  </main>
+</Layout>

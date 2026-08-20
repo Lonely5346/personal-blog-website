@@ -1,0 +1,51 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Sidebar from "../components/Sidebar.astro";
+import { getCollection } from "astro:content";
+import { SITE, SOCIAL } from "../config";
+import { sortByDate } from "../utils";
+
+const all = await getCollection("posts", ({ data }) => !data.draft);
+const sorted = sortByDate(all);
+---
+
+<Layout title="版权与免责声明" heroTitle="版权与免责声明" heroSubtitle="尊重版权，也保护自己的权益" page>
+  <main class="container">
+    <div class="layout-main">
+      <section>
+        <article class="card post-page">
+          <div class="post-content" style="padding:40px">
+            <p>更新日期：2026-08-21</p>
+
+            <h2>1. 版权声明</h2>
+            <p>
+              本站（「{SITE.title}」，作者 {SITE.author}）中的<strong>原创文章、图片及其他原创内容</strong>，
+              版权归作者所有。未经许可，请勿擅自转载或用于商业用途。
+            </p>
+            <p>
+              如需转载，请注明<strong>作者与原文链接</strong>（https://blog.lonely5346.cn），并保留原文完整内容。
+            </p>
+            <p>
+              本站<strong>网站源代码</strong>采用 MIT 许可证开源（见 GitHub 仓库），但仓库内的文章内容不属于 MIT 许可范围。
+            </p>
+
+            <h2>2. 免责声明</h2>
+            <ul>
+              <li>本站文章仅代表作者个人观点，内容仅供参考，不构成任何专业建议；据此操作造成的后果作者不承担责任。</li>
+              <li>文中引用的资料、链接及数据可能随时变化，作者不保证其准确性与时效性。</li>
+              <li>第三方链接仅为了方便访问，不代表作者认同其内容或观点。</li>
+            </ul>
+
+            <h2>3. 侵权处理</h2>
+            <p>
+              如您认为本站内容侵犯了您的合法权益（如著作权、肖像权等），请通过邮箱
+              <a href={`mailto:${SOCIAL.email}`}>联系我们</a>，
+              我们会在核实后尽快处理。
+            </p>
+          </div>
+        </article>
+      </section>
+      <Sidebar posts={sorted} />
+    </div>
+  </main>
+</Layout>
