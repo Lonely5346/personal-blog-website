@@ -1,12 +1,14 @@
 ---
 import { NAV, SITE } from "../config";
 import ThemeToggle from "./ThemeToggle.astro";
+
+const logoChar = SITE.title.charAt(0);
 ---
 
 <header class="site-header">
   <div class="container">
     <a class="brand" href="/" aria-label="回到首页">
-      <span class="logo-dot">梦</span>
+      <span class="logo-dot">{logoChar}</span>
       <span>{SITE.title}</span>
     </a>
 

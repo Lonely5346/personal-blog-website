@@ -6,9 +6,9 @@ export const SITE = {
   /** 部署后的最终网址（构建 RSS / sitemap 用，末尾不要带 /） */
   url: "https://lonely5346.cn",
   /** 网站标题 */
-  title: "梦落の小屋",
+  title: "苍の博客",
   /** 副标题 / 一句话介绍 */
-  subtitle: "记录折腾路上的点点滴滴",
+  subtitle: "爱折腾的空门苍，记录教程、笔记与踩坑日常",
   /** 作者名 */
   author: "空门苍",
   /** 头像（放在 public/ 下，或使用外链图片） */
