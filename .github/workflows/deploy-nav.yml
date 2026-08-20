@@ -20,6 +20,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
+      - name: Create Pages project (if not exists)
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages project create lonely5346-nav --production-branch=main || true
+
       - name: Deploy Nav to Cloudflare Pages
         uses: cloudflare/wrangler-action@v4
         with:
