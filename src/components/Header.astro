@@ -1,5 +1,5 @@
 ---
-import { NAV } from "../config";
+import { NAV, SITE } from "../config";
 import ThemeToggle from "./ThemeToggle.astro";
 ---
 
@@ -7,7 +7,7 @@ import ThemeToggle from "./ThemeToggle.astro";
   <div class="container">
     <a class="brand" href="/" aria-label="回到首页">
       <span class="logo-dot">梦</span>
-      <span>梦落の小屋</span>
+      <span>{SITE.title}</span>
     </a>
 
     <nav class="site-nav" aria-label="主导航">
