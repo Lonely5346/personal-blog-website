@@ -8,7 +8,9 @@
 ## 1. 项目是什么
 
 一个 **Sakurairo 樱花风格的个人博客**，基于 **Astro 5 + TypeScript** 的纯静态站点。
-- 线上地址：**https://blog.lonely5346.cn**（Cloudflare CDN 加速；旧域名 lonely5346.cn 301 重定向到新域名）
+- 线上地址：**https://blog.lonely5346.cn**（Cloudflare CDN 加速）
+- 导航页：**https://lonely5346.cn**（根域名导航页，聚合子域名入口；Pages 项目 lonely5346-nav，源码在 
+av/）
 - 备用地址：https://personal-blog-website-9jc.pages.dev
 - 站名：**苍の博客** ｜ 作者：**空门苍**（GitHub: `Lonely5346`）
 - 主题风格参考 blog.dreamfall.cn（Sakurairo），但用 Astro 自研实现
@@ -29,6 +31,7 @@
 ```
 PersonalBlogWebsite/
 ├── AGENTS.md                 ← 本文件
+├── nav/                       ← 根域名导航页（独立部署到 Pages 项目 lonely5346-nav）
 ├── src/
 │   ├── config.ts             ★ 全站配置唯一入口（标题/作者/导航/社交/SEO）
 │   ├── content.config.ts     ★ 文章 frontmatter 校验 schema
@@ -69,7 +72,8 @@ draft: false               # true=草稿不发布
 ## 5. 部署架构与凭据（勿外泄）
 
 ```
-用户 → https://blog.lonely5346.cn → Cloudflare CDN → Cloudflare Pages
+用户 → https://blog.lonely5346.cn → Cloudflare CDN → Cloudflare Pages（博客）
+用户 → https://lonely5346.cn → Cloudflare Pages（导航页，项目 lonely5346-nav）
                                                     ↑
                           内容来自 GitHub（main 分支 push 自动部署）
 ```
@@ -81,7 +85,7 @@ draft: false               # true=草稿不发布
 
 ### Cloudflare
 - 账号邮箱：1816182085@qq.com ｜ Account ID：`671d941a2ca8128766f53e80afdc4097`
-- Pages 项目：`personal-blog-website`（production branch = main）
+- Pages 项目：`personal-blog-website`（production branch = main，博客）；`lonely5346-nav`（导航页，源码 `nav/`）
 - 自定义域名：`blog.lonely5346.cn`（已激活；CNAME 代理 → personal-blog-website-9jc.pages.dev）；旧域名 `lonely5346.cn` 配置 301 重定向
 - Zone ID：`e378102bc1c6cf28b3b9ab432f3b33bb`
 - 域名 NS（已切到 Cloudflare）：`apollo.ns.cloudflare.com` / `rosemary.ns.cloudflare.com`

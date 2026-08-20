@@ -1,10 +1,11 @@
-name: Deploy to Cloudflare Pages
+name: Deploy Nav Page
 
 on:
   push:
     branches: [main]
-    paths-ignore:
+    paths:
       - "nav/**"
+      - ".github/workflows/deploy-nav.yml"
   workflow_dispatch:
 
 jobs:
@@ -13,27 +14,15 @@ jobs:
     permissions:
       contents: read
     concurrency:
-      group: cloudflare-pages
+      group: cloudflare-pages-nav
       cancel-in-progress: false
     steps:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Setup Node
-        uses: actions/setup-node@v7
-        with:
-          node-version: 22
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build site
-        run: npm run build
-
-      - name: Deploy to Cloudflare Pages
+      - name: Deploy Nav to Cloudflare Pages
         uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy dist --project-name=personal-blog-website
+          command: pages deploy nav --project-name=lonely5346-nav --commit-dirty=true
