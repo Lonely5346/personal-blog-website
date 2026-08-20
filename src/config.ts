@@ -4,7 +4,7 @@
 
 export const SITE = {
   /** 部署后的最终网址（构建 RSS / sitemap 用，末尾不要带 /） */
-  url: "https://example.com",
+  url: "https://lonely5346.cn",
   /** 网站标题 */
   title: "梦落の小屋",
   /** 副标题 / 一句话介绍 */
