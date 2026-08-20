@@ -8,7 +8,7 @@
 ## 1. 项目是什么
 
 一个 **Sakurairo 樱花风格的个人博客**，基于 **Astro 5 + TypeScript** 的纯静态站点。
-- 线上地址：**https://lonely5346.cn**（Cloudflare CDN 加速）
+- 线上地址：**https://blog.lonely5346.cn**（Cloudflare CDN 加速；旧域名 lonely5346.cn 301 重定向到新域名）
 - 备用地址：https://personal-blog-website-9jc.pages.dev
 - 站名：**苍の博客** ｜ 作者：**空门苍**（GitHub: `Lonely5346`）
 - 主题风格参考 blog.dreamfall.cn（Sakurairo），但用 Astro 自研实现
@@ -69,7 +69,7 @@ draft: false               # true=草稿不发布
 ## 5. 部署架构与凭据（勿外泄）
 
 ```
-用户 → https://lonely5346.cn → Cloudflare CDN → Cloudflare Pages
+用户 → https://blog.lonely5346.cn → Cloudflare CDN → Cloudflare Pages
                                                     ↑
                           内容来自 GitHub（main 分支 push 自动部署）
 ```
@@ -82,7 +82,7 @@ draft: false               # true=草稿不发布
 ### Cloudflare
 - 账号邮箱：1816182085@qq.com ｜ Account ID：`671d941a2ca8128766f53e80afdc4097`
 - Pages 项目：`personal-blog-website`（production branch = main）
-- 自定义域名：`lonely5346.cn`（已激活；CNAME 代理 → personal-blog-website-9jc.pages.dev）
+- 自定义域名：`blog.lonely5346.cn`（已激活；CNAME 代理 → personal-blog-website-9jc.pages.dev）；旧域名 `lonely5346.cn` 配置 301 重定向
 - Zone ID：`e378102bc1c6cf28b3b9ab432f3b33bb`
 - 域名 NS（已切到 Cloudflare）：`apollo.ns.cloudflare.com` / `rosemary.ns.cloudflare.com`
 - 域名注册/续费仍在**阿里云**（解析在 Cloudflare，无 ICP 备案要求）
@@ -107,16 +107,15 @@ git push                             # 触发 GitHub Actions 自动部署
 - **GitHub 直连不稳定**（国内网络）：`git push` 常报 `Connection was reset` / `Failed to connect to github.com:443`。对策：重试几次、等待后重试；必要时用备用通道（GitHub API/连接器）上传文件
 - 已做缓解：`git config --global http.version HTTP/1.1`
 - **下载走国内镜像**：用户明确要求（如 ghfast.top / gh-proxy.com / ghproxy.net 前缀 `https://ghfast.top/https://github.com/...`）
-- **本机沙箱 DNS（10.2.59.17）解析不了 lonely5346.cn**：验证 DNS 请用公共 DoH（`https://dns.alidns.com/resolve?name=xxx&type=A&cd=true` 或 `https://doh.pub/...`，加 `&cd=true` 绕过缓存）；手机/其他网络访问正常不代表配置有问题
+- **本机沙箱 DNS（10.2.59.17）解析不了 blog.lonely5346.cn**：验证 DNS 请用公共 DoH（`https://dns.alidns.com/resolve?name=xxx&type=A&cd=true` 或 `https://doh.pub/...`，加 `&cd=true` 绕过缓存）；手机/其他网络访问正常不代表配置有问题
 - 本机直连 Cloudflare 边缘节点也偶发不通，抓线上页面失败时优先检查 DNS 而非部署
 - git 提交时如无全局 user 配置，用内联身份：
   `git -c user.name="PersonalBlog" -c user.email="blog@example.com" commit -m "..."`
 
 ## 8. 当前状态（截至 2026-08-20）
 
-- ✅ 网站已上线：`https://lonely5346.cn`（苍の博客，已发布 2 篇文章）
+- ✅ 网站已上线：`https://blog.lonely5346.cn`（苍の博客，已发布 1 篇文章）
   - 《你好，世界 —— 苍の博客开张了》（`src/content/posts/welcome.md`）
-  - 《面向四代钠冷快堆的乏燃料池冷却水高精度净化关键装备研究》（`src/content/posts/nuclear-purification.md`）
 - ✅ 站点信息已改为真实资料（作者/头像/GitHub/邮箱/标题）
 - ✅ 自动部署已配置并验证通过（GitHub Actions：push main 自动部署 Cloudflare Pages）
 - ✅ 本地 `main` 与 `origin/main` 保持同步
